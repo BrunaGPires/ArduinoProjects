@@ -1,10 +1,10 @@
-//componentes
+// Componentes
 #define LED 2
 #define BUZZER 4
 
-//armazena palavra
+// Armazena palavra
 String str = "";
-//verifica se já foi
+// Verifica se já foi
 bool status = false;
 
 void setup() {
@@ -24,14 +24,14 @@ void loop() {
   if (status == false) {
     translate();
 
-    // limpa a string depois de traduzir e reseta o status
+    // Limpa a string depois de traduzir e reseta o status
     str = "";
     status = false;    
   }
   
 }
 
-//lê o que usuario digitou no serial
+// Le o que usuario digitou no serial
 void receive() {
   if (Serial.available() > 0) {
     str = Serial.readStringUntil('\n');
@@ -40,7 +40,7 @@ void receive() {
   }
 }
 
-//traduz o caractere
+// Traduz o caractere
 void translate() {
   for (int i = 0; i < str.length(); i++) {
     char charact = toLowerCase(str.charAt(i));
@@ -186,7 +186,7 @@ void translate() {
     }
   
     if (i <= str.length() - 1) {
-      delay(600); //delay entre caracteres
+      delay(600); //Delay entre caracteres
     }
 
     status = true;
@@ -194,7 +194,7 @@ void translate() {
 }
 
 
-//pisca o led
+// Pisca o LED
 void dot() {
   buzzerDot();
   digitalWrite(LED, HIGH);
@@ -213,7 +213,7 @@ void dash() {
   delay(200); 
 }
 
-//buzer bipbip
+// Buzzer faz bip
 void buzzerDot() {
   tone(BUZZER, 440);
   delay(150);

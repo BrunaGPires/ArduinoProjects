@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-// Preencha abaixo as informacoes da sua rede Wifi
-const char* ssid = "PMNH-LIVRE";
+// Informacoes da rede Wifi
+const char* ssid = "";
 const char* password = "";
 const char* mqtt_server = "mqtt.eclipseprojects.io"; // Endereco do Broker MQTT
 
@@ -20,7 +20,7 @@ int value = 0;
 String str = "";
 bool status = false;
 
-// Tópico para controlar o LED
+// Topico do MQTT
 const char* ledTopic = "esp8266/led";
 const char* morseTopic = "esp8266/morse";
 
@@ -45,7 +45,7 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-//pisca o led
+// Pisca o LED
 void dot() {
   buzzerDot();
   digitalWrite(LED, HIGH);
@@ -64,7 +64,7 @@ void dash() {
   delay(200); 
 }
 
-//buzer bipbip
+// Buzzer faz bip
 void buzzerDot() {
   tone(BUZZER, 440);
   delay(110);
@@ -262,7 +262,7 @@ void reconnect() {
     clientId += String(random(0xffff), HEX);
     if (client.connect(clientId.c_str())) {
       Serial.println("conectado");
-      client.subscribe(ledTopic); // Inscreve-se no tópico de controle do LED
+      client.subscribe(ledTopic); // Inscreve no topico de controle do LED
       client.subscribe(morseTopic);
     } else {
       Serial.print("falhou, rc=");

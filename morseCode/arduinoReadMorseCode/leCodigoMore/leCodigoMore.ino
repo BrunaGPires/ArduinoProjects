@@ -3,10 +3,10 @@
 // SOUND SENSOR
 const int sensorSound = A0;
 
-unsigned long startTimer = 0;  // variável para armazenar o tempo inicial do som
-unsigned long endTimer = 0;    // variável para armazenar o tempo final do som
-const int soundThreshold = 25; // referência para indicar se o som foi detectado
-const unsigned long dotDuration = 120; // limite de duração para ponto (em milissegundos)
+unsigned long startTimer = 0;  // Variavel para armazenar o tempo inicial do som
+unsigned long endTimer = 0;    // Variavel para armazenar o tempo final do som
+const int soundThreshold = 25; // Referencia para indicar se o som foi detectado
+const unsigned long dotDuration = 120; // Limite de duracao para ponto (em milissegundos)
 
 bool soundDetected = false;
 
@@ -52,7 +52,7 @@ void receive() {
         lcd.setCursor(0, 0);
         lcd.print(".");
       } else {
-        // Traço
+        // Traco
         Serial.println(soundDetected);
         Serial.println("-");
         
