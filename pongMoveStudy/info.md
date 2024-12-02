@@ -5,7 +5,7 @@
 - 1 Arduino UNO
 - 2 Joystick Shield Nokia 5110 V2.0
 
-
+https://github.com/user-attachments/assets/c34cc9f7-ece6-459b-b061-7cac6ebf373f
 
 ## Explicação
 Primeiro procurei entender como desenhar os jogadores na tela, separando a tela e colocando eles na meia metade do display e, depois, foi feito um teste de quais valores eram recebidos do joystick ao mover no eixo vertical para cima e para baixo, após ter entendido os valores que recebia do joystick era hora de receber os valores e caso passasse de um valor limite era somado a posição do jogador +1 ou -1 dependendo se era pra subir ou descer. Dessa forma conseguimos ler os valores do eixo vertical dos joysticks e os converter como movimentos dos jogadores na tela.
