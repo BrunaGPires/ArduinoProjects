@@ -9,7 +9,7 @@
 #include <SPI.h>
 #include "pitches.h"
 
-// led
+// LED
 #define MAX_DEVICES 1
 #define CLK_PIN 13
 #define DATA_PIN 11
@@ -23,26 +23,26 @@
 // estilo, pin (low) transfere data, quantidade de led dot matrix
 MD_MAX72XX mx = MD_MAX72XX(MD_MAX72XX::PAROLA_HW, CS_PIN, MAX_DEVICES);
 
-// cobra
+// cobrinha
 const int maxX = MAX_DEVICES * 8 - 1;
 const int maxY = 7;
 int x = MAX_DEVICES * 8 / 2;
 int y = 7 / 2;
-int lastX = 0; // ultima posição X da cobra
-int lastY = 0; // ultima posição Y da cobra
+int lastX = 0; // ultima posição X da cobrinha
+int lastY = 0; // ultima posição Y da cobrinha
 
-int cobraTamanho = 2; // tamanho inicial da cobra (incluindo a cabeça)
+int cobraTamanho = 2; // tamanho inicial da cobrinha (incluindo a cabeça dela)
 struct Segment {
   int x;
   int y;
 };
-const int MAX_SEGMENTS = 10; // número máximo de segmentos da cobra
-Segment segments[MAX_SEGMENTS]; // array para armazenar os segmentos da cobra
+const int MAX_SEGMENTS = 10; // número máximo de segmentos da cobrinha
+Segment segments[MAX_SEGMENTS]; // array para armazenar os segmentos da cobrinha
 
 unsigned long ultimoMovimento = 0;
-const unsigned long intervaloMovimento = 500; // intervalo de movimento em milissegundos
-int directionX = 1; // direção inicial da cobra: direita
-int directionY = 0; // direção inicial da cobra: embaixo
+const unsigned long intervaloMovimento = 400; // intervalo de movimento em milissegundos
+int directionX = 1; // direção inicial da cobrinha: direita
+int directionY = 0; // direção inicial da cobrinha: embaixo
 
 // maçã
 const int maxAppleX = MAX_DEVICES * 8 - 1;
@@ -52,12 +52,12 @@ int appleY = 7 / 2;
 int lastAppleX = 0; // ultima posição X da maçã
 int lastAppleY = 0; // ultima posição Y da maçã
 
-//buzzer
+// buzzer
 int buzzer = 3;
 
 void setup() {
   mx.begin();
-  //acende o led
+  // acende o LED
   mx.control(MD_MAX72XX::INTENSITY, MAX_INTENSITY / 2);
   mx.clear();
 
@@ -74,7 +74,7 @@ void setup() {
 void loop() {
   unsigned long currentTime = millis();
 
-  // move a cobra automaticamente
+  // move a cobrinha automaticamente
   if (currentTime - ultimoMovimento >= intervaloMovimento) {
     move(); 
     ultimoMovimento = currentTime;
@@ -94,7 +94,7 @@ void sorteia() {
     appleX = random(0, maxAppleX + 1);
     appleY = random(0, maxAppleY + 1);
     
-    // verifica se a posição da maçã não está ocupada pela cobra
+    // verifica se a posição da maçã não está ocupada pela cobrinha
     ocupadaPelaCobra = false;
     for (int i = 0; i < cobraTamanho; i++) {
       if (segments[i].x == appleX && segments[i].y == appleY) {
@@ -102,7 +102,7 @@ void sorteia() {
         break;
       }
     }
-  } while (ocupadaPelaCobra); // continua sorteando até encontrar uma posição válida
+  } while (ocupadaPelaCobra); // continua sorteando até encontrar uma posição valida
 }
 
 void maca() {
@@ -110,44 +110,44 @@ void maca() {
 }
 
 void come() {
-  // desliga o LED na última posição da cobra
+  // desliga o LED na última posição da cobrinha
   mx.setPoint(lastY, lastX, false);
   
-  // atualiza a posição da cobra
+  // atualiza a posição da cobrinha
   lastX = x;
   lastY = y;
 
-  // desloca todos os segmentos da cobra
+  // desloca todos os segmentos da cobrinha
   for (int i = cobraTamanho - 1; i > 0; i--) {
     segments[i] = segments[i - 1];
   }
-  // atualiza a posição da cabeça
+  // atualiza a posição da cabeça da cobrinha
   segments[0].x = x;
   segments[0].y = y;
   
-  // atualiza a posição da cauda (último segmento)
+  // atualiza a posição da cauda da cobrinha (último segmento)
   lastX = segments[cobraTamanho - 1].x;
   lastY = segments[cobraTamanho - 1].y;
 
-  // verifica se a cobra atingiu a maçã
+  // verifica se a cobrinha comeu a maçã
   if (x == appleX && y == appleY) {
     sorteia(); // sorteia uma nova posição para a maçã
     cobraTamanho++;
   }
 
-  // verifica se a cobra bateu em si mesma - GAME OVER
+  // verifica se a cobrinha bateu em si mesma - GAME OVER
   for (int i = 1; i < cobraTamanho; i++) {
     if (segments[i].x == x && segments[i].y == y) {
-      gameOver(); // se houver colisão, chama a função de game over
+      gameOver(); // se teve colisão chama a função de game over
     }
   }
 
-  // verifica se a cobra atingiu o tamanho esperado - GAME WIN
+  // verifica se a cobrinha atingiu o tamanho esperado GAME WIN
   if (cobraTamanho == MAX_SEGMENTS) {
     gameWin();
   }
 
-  // verifica se a cobra bateu nas paredes
+  // verifica se a cobrinha bateu nas paredes
   if (x < 0 || x > maxX || y < 0 || y > maxY) {
     gameOver();
   }
@@ -161,19 +161,19 @@ void controle() {
 
   if (vert < 300 && directionY >= 0) {
     directionY = 1;
-    directionX = 0; // garante que a cobra se mova apenas na vertical quando o comando de subir é acionado
+    directionX = 0; // garante que a cobrinha se mova apenas na vertical cima quando o comando de subir é acionado
   }
   if (vert > 700 && directionY <= 0) {
     directionY = -1;
-    directionX = 0; // garante que a cobra se mova apenas na vertical quando o comando de descer é acionado
+    directionX = 0; // garante que a cobrinha se mova apenas na vertical baixo quando o comando de descer é acionado
   }
   if (horz > 700 && directionX <= 0) {
     directionX = 1;
-    directionY = 0; // garante que a cobra se mova apenas na horizontal quando o comando de ir para a direita é acionado
+    directionY = 0; // garante que a cobrinha se mova apenas na horizontal para direita quando o comando de ir para a direita é acionado
   }
   if (horz < 300 && directionX >= 0) {
     directionX = -1;
-    directionY = 0; // garante que a cobra se mova apenas na horizontal quando o comando de ir para a esquerda é acionado
+    directionY = 0; // garante que a cobrinha se mova apenas na horizontal para esquerda quando o comando de ir para a esquerda é acionado
   }
 }
 
@@ -188,7 +188,7 @@ void reset() {
   // reseta cobrinha 
   if (digitalRead(SEL_PIN) == LOW) {
     mx.clear();
-    // reinicia todas as variáveis, posição da cobra, tamanho, maçã.
+    // reinicia todas as variaveis, a posição da cobrinha, o tamanho e a maçã
     x = MAX_DEVICES * 8 / 2;
     y = 7 / 2;
     lastX = 0;
